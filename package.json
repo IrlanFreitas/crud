@@ -4,14 +4,18 @@
   "description": "Projeto criando um crud com qualidade.",
   "main": "index.js",
   "scripts": {
-    "start:crud": "node ./core/crud.js",
-    "dev:crud": "nodemon ./core/crud.js",
+    "start:crud": "npx ts-node ./core/crud.ts",
+    "dev:crud": "nodemon --ext ts,tsx --exec 'npm run start:crud'",
     "test:crud": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/node": "^20.5.3",
     "nodemon": "^3.0.1"
+  },
+  "dependencies": {
+    "typescript": "^5.1.6"
   }
 }

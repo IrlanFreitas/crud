@@ -1,1 +1,14 @@
-Fazendo o curso que me propus a fazer!
+{
+  "todos": [
+    {
+      "content": "Primeira TODO",
+      "date": "2023-08-22T23:57:47.232Z",
+      "done": false
+    },
+    {
+      "content": "Segunda TODO",
+      "date": "2023-08-22T23:57:47.233Z",
+      "done": false
+    }
+  ]
+}
