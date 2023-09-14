@@ -16,7 +16,10 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
-      "@*": ["src/*"]
+      "@*": ["./*"],
+      "@ui/*": ["src/ui/*"],
+      "@db-crud": ["core/crud.ts"],
+      "@server/*": ["src/server/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
