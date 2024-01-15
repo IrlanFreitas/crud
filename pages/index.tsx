@@ -1,12 +1,12 @@
 /* eslint-disable no-console */
 /* eslint-disable react/react-in-jsx-scope */
-import React from "react";
+import React, { useState } from "react";
 import { GlobalStyles } from "@ui/theme/GlobalStyles";
 import { todoController } from "@ui/controller/todo";
 
 // const bg = "https://mariosouto.com/cursos/crudcomqualidade/bg";
 
-// * Por estar dentro da pasta public dá pra ßacessar pela url
+// * Por estar dentro da pasta public dá pra acessar pela url
 const bgPublic = "/assets/bg.jpeg";
 
 interface HomeTodo {
@@ -15,14 +15,29 @@ interface HomeTodo {
 }
 
 function HomePage() {
+    const [initialLoadComplete, setInitialLoadComplete] = useState(false);
+    const [totalPages, setTotalPages] = useState(0);
+    const [isLoading, setIsLoading] = useState(true);
     const [page, setPage] = React.useState(1);
     const [todos, setTodos] = React.useState<HomeTodo[]>([]);
 
+    const hasMorePages = totalPages > page;
+    const hasNoTodos = todos.length === 0 && !isLoading;
+
     React.useEffect(() => {
-        todoController.get({ page }).then(({ todos }) => {
-            setTodos(todos);
-        });
-    }, []);
+        setInitialLoadComplete(true);
+        if (!initialLoadComplete) {
+            todoController
+                .get({ page })
+                .then(({ todos, pages }) => {
+                    setTodos(todos);
+                    setTotalPages(pages);
+                })
+                .finally(() => {
+                    setIsLoading(false);
+                });
+        }
+    }, [page]);
 
     return (
         <main>
@@ -70,7 +85,7 @@ function HomePage() {
                                     <td>
                                         <input type="checkbox" />
                                     </td>
-                                    <td>{currentTodo?.id.substring(0, 5)}</td>
+                                    <td>{currentTodo?.id.substring(0, 4)}</td>
                                     <td>{currentTodo?.content}</td>
                                     <td align="right">
                                         <button data-type="delete">
@@ -81,45 +96,70 @@ function HomePage() {
                             );
                         })}
 
-                        {/* <tr>
-                            <td
-                                colSpan={4}
-                                align="center"
-                                style={{ textAlign: "center" }}
-                            >
-                                Carregando...
-                            </td>
-                        </tr> */}
-
-                        {/* <tr>
-                            <td colSpan={4} align="center">
-                                Nenhum item encontrado
-                            </td>
-                        </tr> */}
-
-                        <tr>
-                            <td
-                                colSpan={4}
-                                align="center"
-                                style={{ textAlign: "center" }}
-                            >
-                                <button
-                                    onClick={() => setPage(page + 1)}
-                                    data-type="load-more"
+                        {isLoading && (
+                            <tr>
+                                <td
+                                    colSpan={4}
+                                    align="center"
+                                    style={{ textAlign: "center" }}
                                 >
-                                    Página {page}, Carregar mais{" "}
-                                    <span
-                                        style={{
-                                            display: "inline-block",
-                                            marginLeft: "4px",
-                                            fontSize: "1.2em",
+                                    Carregando...
+                                </td>
+                            </tr>
+                        )}
+
+                        {hasNoTodos && (
+                            <tr>
+                                <td colSpan={4} align="center">
+                                    Nenhum item encontrado
+                                </td>
+                            </tr>
+                        )}
+
+                        {hasMorePages && (
+                            <tr>
+                                <td
+                                    colSpan={4}
+                                    align="center"
+                                    style={{ textAlign: "center" }}
+                                >
+                                    <button
+                                        onClick={() => {
+                                            setIsLoading(true);
+                                            const nextPage = page + 1;
+                                            setPage(nextPage);
+
+                                            todoController
+                                                .get({ page: nextPage })
+                                                .then(({ todos, pages }) => {
+                                                    setTodos((oldTodos) => {
+                                                        return [
+                                                            ...oldTodos,
+                                                            ...todos,
+                                                        ];
+                                                    });
+                                                    setTotalPages(pages);
+                                                })
+                                                .finally(() => {
+                                                    setIsLoading(false);
+                                                });
                                         }}
+                                        data-type="load-more"
                                     >
-                                        ↓
-                                    </span>
-                                </button>
-                            </td>
-                        </tr>
+                                        Página {page}, Carregar mais
+                                        <span
+                                            style={{
+                                                display: "inline-block",
+                                                marginLeft: "4px",
+                                                fontSize: "1.2em",
+                                            }}
+                                        >
+                                            ↓
+                                        </span>
+                                    </button>
+                                </td>
+                            </tr>
+                        )}
                     </tbody>
                 </table>
             </section>
