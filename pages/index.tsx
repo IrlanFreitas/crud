@@ -15,18 +15,25 @@ interface HomeTodo {
 }
 
 function HomePage() {
-    const [initialLoadComplete, setInitialLoadComplete] = useState(false);
+    // const [initialLoadComplete, setInitialLoadComplete] = useState(false);
+    const initialLoadComplete = React.useRef(false);
     const [totalPages, setTotalPages] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
     const [page, setPage] = React.useState(1);
+    const [search, setSearch] = React.useState("");
     const [todos, setTodos] = React.useState<HomeTodo[]>([]);
 
+    const homeTodos = todoController.filterTodosByContent<HomeTodo>(
+        search,
+        todos
+    );
+
     const hasMorePages = totalPages > page;
-    const hasNoTodos = todos.length === 0 && !isLoading;
+    const hasNoTodos = homeTodos.length === 0 && !isLoading;
 
     React.useEffect(() => {
-        setInitialLoadComplete(true);
-        if (!initialLoadComplete) {
+        // setInitialLoadComplete(true);
+        if (!initialLoadComplete.current) {
             todoController
                 .get({ page })
                 .then(({ todos, pages }) => {
@@ -35,6 +42,7 @@ function HomePage() {
                 })
                 .finally(() => {
                     setIsLoading(false);
+                    initialLoadComplete.current = true;
                 });
         }
     }, [page]);
@@ -63,6 +71,9 @@ function HomePage() {
                     <input
                         type="text"
                         placeholder="Filtrar lista atual, ex: Dentista"
+                        onChange={(event) => {
+                            setSearch(event.target.value);
+                        }}
                     />
                 </form>
 
@@ -79,7 +90,7 @@ function HomePage() {
                     </thead>
 
                     <tbody>
-                        {todos?.map((currentTodo) => {
+                        {homeTodos?.map((currentTodo) => {
                             return (
                                 <tr key={currentTodo?.id}>
                                     <td>
