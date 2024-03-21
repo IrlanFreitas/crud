@@ -100,4 +100,25 @@ async function toggleDone({
     // });
 }
 
-export const todoController = { get, filterTodosByContent, create, toggleDone };
+async function deleteById(id: string): Promise<void> {
+    // * Fail Fast Validations
+    const parsedParams = schema.string().min(1).safeParse(id);
+
+    if (!parsedParams.success) {
+        // ? Como pode ser feito sem o zod
+        // if (!content) {
+        throw new Error("Você precisa informar um todo id");
+    }
+
+    // * Optimistic Update
+    // updateTodoOnScreen();
+    return await todoRepository.deleteById(parsedParams.data);
+}
+
+export const todoController = {
+    get,
+    filterTodosByContent,
+    create,
+    toggleDone,
+    deleteById,
+};

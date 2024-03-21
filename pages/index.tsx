@@ -171,7 +171,54 @@ function HomePage() {
                                         )}
                                     </td>
                                     <td align="right">
-                                        <button data-type="delete">
+                                        <button
+                                            onClick={function handleDelete() {
+                                                // todoController.deleteById({
+                                                //     content: currentTodo?.id,
+                                                //     onError() {
+                                                //         alert(
+                                                //             "Falha ao atualizar a TODO :("
+                                                //         );
+                                                //     },
+                                                //     // Update Real
+                                                //     // * Optmistic Update - Eu não sei se deu certo a operação mas eu quero que atualize a tela
+                                                //     updateTodoOnScreen() {
+                                                //         setTodos(
+                                                //             (currentTodos) => {
+                                                //                 return currentTodos.map(
+                                                //                     (todo) => {
+                                                //                         if (
+                                                //                             todo.id ===
+                                                //                             currentTodo.id
+                                                //                         ) {
+                                                //                             return {
+                                                //                                 ...todo,
+                                                //                                 done: !todo.done,
+                                                //                             };
+                                                //                         }
+
+                                                //                         return todo;
+                                                //                     }
+                                                //                 );
+                                                //             }
+                                                //         );
+                                                //     },
+                                                // });
+                                                todoController.deleteById(currentTodo?.id)
+                                                .then(() => {
+                                                    setTodos((currentTodos) => {
+                                                        return currentTodos.filter( (todo) => {
+                                                            return todo.id !== currentTodo?.id
+                                                        }) 
+                                                    })
+                                                })
+                                                .catch(() => {
+                                                    console.error("Failed to delete")
+                                                })
+                                                
+                                            }}
+                                            data-type="delete"
+                                        >
                                             Apagar
                                         </button>
                                     </td>
