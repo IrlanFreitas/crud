@@ -16,5 +16,11 @@ jobs:
             ## =================
             - name: "Debug"
               run: "ls -la"
+            ## Poderia ser utilizado o 'npm install' mas 
+            ## no caso do processo de CI/CD é mais interessante e performatico
+            ## utilizar o comando 'npm ci' que instala apenas o necessário
+            ## para executar a pipeline
+            - name: "Install Dependencies"
+              run: "npm ci"
             - name: "Lint"
               run: "npm run lint"
