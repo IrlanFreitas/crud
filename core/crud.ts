@@ -75,7 +75,7 @@ export function deleteById(id: UUID) {
 
     const todos = allTodos.filter((todo) => todo.id !== id);
 
-    console.log({ todos });
+    // console.log({ todos });
 
     fs.writeFileSync(DB_FILE_PATH, JSON.stringify({ todos }, null, 2));
 }

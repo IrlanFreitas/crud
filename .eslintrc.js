@@ -6,7 +6,12 @@ module.exports = {
         node: true,
         "cypress/globals": true,
     },
-    plugins: ["react", "prettier", "@typescript-eslint", "cypress", "chai-friendly"
+    plugins: [
+        "react",
+        "prettier",
+        "@typescript-eslint",
+        "cypress",
+        "chai-friendly",
     ],
     extends: [
         "eslint:recommended",
