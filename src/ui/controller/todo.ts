@@ -49,7 +49,7 @@ async function create({
         .then((newTodo) => {
             onSuccess(newTodo);
         })
-        .catch((error) => {
+        .catch(() => {
             onError();
         });
 

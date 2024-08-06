@@ -95,15 +95,14 @@ async function toggleDone(req: NextApiRequest, res: NextApiResponse) {
 }
 
 async function deleteById(req: NextApiRequest, res: NextApiResponse) {
-
     // * Validate query schema;
     const QuerySchema = schema.object({
-        id: schema.string().uuid().min(1)
-    })
-    
+        id: schema.string().uuid().min(1),
+    });
+
     // * Fail Fast Validations
-    const parsedQuery = QuerySchema.safeParse(req.query)
-    if(!parsedQuery.success) {
+    const parsedQuery = QuerySchema.safeParse(req.query);
+    if (!parsedQuery.success) {
         res.status(400).json({
             error: {
                 message: `You must to provide a valid id`,
@@ -113,7 +112,7 @@ async function deleteById(req: NextApiRequest, res: NextApiResponse) {
     }
 
     try {
-        const todoId = parsedQuery.data.id
+        const todoId = parsedQuery.data.id;
         if (!todoId || typeof todoId !== "string") {
             res.status(400).json({
                 error: {
@@ -126,7 +125,6 @@ async function deleteById(req: NextApiRequest, res: NextApiResponse) {
         await todoRepository.deleteById(todoId);
 
         res.status(204).end();
-        
     } catch (error: any) {
         if (error instanceof HttpNotFoundError) {
             return res.status(error.status).json({

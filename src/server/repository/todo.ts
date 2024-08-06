@@ -60,10 +60,7 @@ async function toggleDone(id: string): Promise<Todo> {
 }
 
 async function deleteById(id: string) {
-
     if (!id) throw new Error(`You need to provide an id`);
-
-    console.log(`Todo id: ${id}`)
 
     const ALL_TODOS = read();
     const todo = ALL_TODOS.find((todo) => todo.id === id);

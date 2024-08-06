@@ -11,5 +11,29 @@ jobs:
     lint:
         runs-on: ubuntu-latest
         steps:
+            ## [COMMON_CI_Steps]
+            - uses: actions/checkout@v3
+            ## =================
+            - name: "Debug"
+              run: "ls -la"
+            ## Poderia ser utilizado o 'npm install' mas 
+            ## no caso do processo de CI/CD é mais interessante e performatico
+            ## utilizar o comando 'npm ci' que instala apenas o necessário
+            ## para executar a pipeline
+            - name: "Install Dependencies"
+              run: "npm ci"
             - name: "Lint"
-              run: "echo 'alo alo!!!'"
+              run: "npm run lint"
+    test:
+        runs-on: ubuntu-latest
+        container:
+            image: cypress/browsers:node-20.14.0-chrome-126.0.6478.114-1-ff-127.0.1-edge-126.0.2592.61-1
+            options: --user 1001
+        steps:
+            ## [COMMON_CI_Steps]
+            - uses: actions/checkout@v3
+            ## =================
+            - name: "Install Dependencies"
+              run: "npm ci"
+            - name: "Test"
+              run: "npm run test"

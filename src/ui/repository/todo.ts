@@ -150,7 +150,6 @@ async function deleteById(todoId: string): Promise<void> {
     });
 
     if (!response.ok) throw new Error(`Failed to delete`);
-    
 }
 
 export const todoRepository = {

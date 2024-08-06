@@ -49,8 +49,6 @@ function HomePage() {
         }
     }, [page]);
 
-    async function toggleDone(id: string) {}
-
     return (
         <main>
             <GlobalStyles themeName="coolGrey" />
@@ -205,18 +203,27 @@ function HomePage() {
                                                 //         );
                                                 //     },
                                                 // });
-                                                todoController.deleteById(currentTodo?.id)
-                                                .then(() => {
-                                                    setTodos((currentTodos) => {
-                                                        return currentTodos.filter( (todo) => {
-                                                            return todo.id !== currentTodo?.id
-                                                        }) 
+                                                todoController
+                                                    .deleteById(currentTodo?.id)
+                                                    .then(() => {
+                                                        setTodos(
+                                                            (currentTodos) => {
+                                                                return currentTodos.filter(
+                                                                    (todo) => {
+                                                                        return (
+                                                                            todo.id !==
+                                                                            currentTodo?.id
+                                                                        );
+                                                                    }
+                                                                );
+                                                            }
+                                                        );
                                                     })
-                                                })
-                                                .catch(() => {
-                                                    console.error("Failed to delete")
-                                                })
-                                                
+                                                    .catch(() => {
+                                                        console.error(
+                                                            "Failed to delete"
+                                                        );
+                                                    });
                                             }}
                                             data-type="delete"
                                         >
