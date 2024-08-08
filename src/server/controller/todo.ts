@@ -3,7 +3,7 @@ import { z as schema } from "zod";
 import { todoRepository } from "../repository/todo";
 import { HttpNotFoundError } from "../infra/errors";
 
-function get(req: NextApiRequest, res: NextApiResponse) {
+async function get(req: NextApiRequest, res: NextApiResponse) {
     const query = req.query;
     const page = Number(query.page);
     const limit = Number(query.limit);
@@ -26,7 +26,7 @@ function get(req: NextApiRequest, res: NextApiResponse) {
         return;
     }
 
-    const output = todoRepository.get({
+    const output = await todoRepository.get({
         page,
         limit,
     });
