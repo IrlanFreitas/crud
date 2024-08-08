@@ -83,7 +83,7 @@ async function toggleDone(req: NextApiRequest, res: NextApiResponse) {
         res.status(200).json({
             todo: updatedTodo,
         });
-    } catch (error: any) {
+    } catch (error: unknown) {
         if (error instanceof Error) {
             res.status(404).json({
                 error: {
@@ -125,7 +125,7 @@ async function deleteById(req: NextApiRequest, res: NextApiResponse) {
         await todoRepository.deleteById(todoId);
 
         res.status(204).end();
-    } catch (error: any) {
+    } catch (error: unknown) {
         if (error instanceof HttpNotFoundError) {
             return res.status(error.status).json({
                 error: {

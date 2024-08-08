@@ -1,7 +1,7 @@
 import { Todo } from "@src/ui/schema/todo";
 
 import { TodoSchema } from "../schema/todo";
-import { supabase } from "../infra/db/supabase"
+import { supabase } from "../infra/db/supabase";
 
 interface TodoRepositoryGetParams {
     page?: number;
