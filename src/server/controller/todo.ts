@@ -3,7 +3,7 @@ import { z as schema } from "zod";
 import { todoRepository } from "../repository/todo";
 import { HttpNotFoundError } from "../infra/errors";
 
-function get(req: NextApiRequest, res: NextApiResponse) {
+async function get(req: NextApiRequest, res: NextApiResponse) {
     const query = req.query;
     const page = Number(query.page);
     const limit = Number(query.limit);
@@ -26,7 +26,7 @@ function get(req: NextApiRequest, res: NextApiResponse) {
         return;
     }
 
-    const output = todoRepository.get({
+    const output = await todoRepository.get({
         page,
         limit,
     });
@@ -83,7 +83,7 @@ async function toggleDone(req: NextApiRequest, res: NextApiResponse) {
         res.status(200).json({
             todo: updatedTodo,
         });
-    } catch (error: any) {
+    } catch (error: unknown) {
         if (error instanceof Error) {
             res.status(404).json({
                 error: {
@@ -125,7 +125,7 @@ async function deleteById(req: NextApiRequest, res: NextApiResponse) {
         await todoRepository.deleteById(todoId);
 
         res.status(204).end();
-    } catch (error: any) {
+    } catch (error: unknown) {
         if (error instanceof HttpNotFoundError) {
             return res.status(error.status).json({
                 error: {
