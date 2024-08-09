@@ -35,7 +35,7 @@ module.exports = {
     // Cherry of the Cake
     rules: {
         "no-console": "warm",
-        "typescript-eslint/no-var-requires": "warm",
+        "typescript-eslint/no-var-requires": "off",
         "typescript-eslint/no-empty-function": "warm",
         "typescript-eslint/no-unused-vars": "warm",
         "cypress/no-unnecessary-waiting": "warm",
