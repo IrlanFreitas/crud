@@ -34,12 +34,12 @@ module.exports = {
     ignorePatterns: ["node_modules/"],
     // Cherry of the Cake
     rules: {
-        "no-console": "warm",
+        "no-console": "warn",
         "typescript-eslint/no-var-requires": "off",
-        "typescript-eslint/no-empty-function": "warm",
-        "typescript-eslint/no-unused-vars": "warm",
-        "cypress/no-unnecessary-waiting": "warm",
-        "no-console": ["error", { allow: ["warm", "error"] }],
+        "typescript-eslint/no-empty-function": "warn",
+        "typescript-eslint/no-unused-vars": "warn",
+        "cypress/no-unnecessary-waiting": "warn",
+        "no-console": ["error", { allow: ["warn", "error"] }],
         "react/no-unknown-property": ["error", { ignore: ["jsx", "global"] }],
     },
 };
