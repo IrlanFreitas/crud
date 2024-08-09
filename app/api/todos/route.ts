@@ -1,0 +1,36 @@
+import { todoController } from "@server/controller/todo2";
+
+export async function GET(request: Request) {
+  return await todoController.GET(request);
+}
+
+export async function POST(request: Request) {
+    return await todoController.POST(request);
+  }
+
+// /* eslint-disable no-console */
+// import { NextApiRequest, NextApiResponse } from "next";
+// import { todoController } from "@server/controller/todo";
+
+// export default async function handler(
+//   request: NextApiRequest,
+//   response: NextApiResponse
+// ) {
+//   // console.log(request.method);
+
+//   if (request.method === "GET") {
+//     await todoController.get(request, response);
+//     return;
+//   }
+
+//   if (request.method === "POST") {
+//     await todoController.post(request, response);
+//     return;
+//   }
+
+//   response.status(405).json({
+//     error: {
+//       message: "Method not allowed",
+//     },
+//   });
+// }

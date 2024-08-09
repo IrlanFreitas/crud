@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 /* eslint-disable react/react-in-jsx-scope */
-import React, { useState } from "react";
+"use client"
+import React from "react";
 import { GlobalStyles } from "@ui/theme/GlobalStyles";
 import { todoController } from "@ui/controller/todo";
 
@@ -18,8 +19,8 @@ interface HomeTodo {
 function HomePage() {
   // const [initialLoadComplete, setInitialLoadComplete] = useState(false);
   const initialLoadComplete = React.useRef(false);
-  const [totalPages, setTotalPages] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
+  const [totalPages, setTotalPages] = React.useState(0);
+  const [isLoading, setIsLoading] = React.useState(true);
   const [page, setPage] = React.useState(1);
   const [newTodoContent, setNewTodoContent] = React.useState("");
   const [search, setSearch] = React.useState("");
