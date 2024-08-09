@@ -5,8 +5,8 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-    return await todoController.POST(request);
-  }
+  return await todoController.POST(request);
+}
 
 // /* eslint-disable no-console */
 // import { NextApiRequest, NextApiResponse } from "next";
