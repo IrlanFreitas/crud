@@ -1,5 +1,6 @@
 name: "[CD] Continuous Delivery"
 
+# Usar para controle de branch main, para subir uma versao em prod
 # on:
 #     push:
 #         branches: [main]
