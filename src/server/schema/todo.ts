@@ -1,16 +1,11 @@
 import { z as schema } from "zod";
 
-// interface Toƒo {
-//     id: string;
-//     content: string;
-//     date: string;
-//     done: boolean;
-// }
-
 export const TodoSchema = schema.object({
   id: schema.string(),
   content: schema.string(),
-  date: schema.string().datetime(),
+  date: schema.string().transform((date) => {
+    return new Date(date).toISOString();
+  }),
   done: schema.boolean(),
 });
 
