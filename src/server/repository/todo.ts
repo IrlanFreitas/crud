@@ -62,6 +62,7 @@ async function createByContent(content: string): Promise<Todo> {
 
   return parsedData;
 }
+
 async function getTodoById(id: string): Promise<Todo> {
   const { data, error } = await supabase
     .from("todos")
@@ -101,7 +102,7 @@ async function deleteById(id: string) {
     id,
   });
 
-  if (error) throw new Error("Failed to delete");
+  if (error) throw new Error(`Failed to delete: ${error}`);
 }
 
 export const todoRepository = {
