@@ -35,5 +35,5 @@ jobs:
             ## =================
             - name: "Install Dependencies"
               run: "npm ci"
-            - name: "Test"
-              run: "npm run test"
+            - name: "Cypress: Test"
+              run: "npm run cy:test"

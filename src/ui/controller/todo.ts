@@ -3,122 +3,122 @@ import { todoRepository } from "../repository/todo";
 import { Todo } from "../schema/todo";
 
 interface TodoControllerGetParams {
-    page: number;
-    limit?: number;
+  page: number;
+  limit?: number;
 }
 
 async function get({ page }: TodoControllerGetParams) {
-    return todoRepository.get({ page: page, limit: 2 });
+  return todoRepository.get({ page: page, limit: 2 });
 }
 
 function filterTodosByContent<Todo>(
-    search: string,
-    todos: Array<Todo & { content: string }>
+  search: string,
+  todos: Array<Todo & { content: string }>
 ): Todo[] {
-    const homeTodo = todos.filter((todo) => {
-        const searchNormalized = search.toLocaleLowerCase();
-        const contentNormalized = todo.content.toLocaleLowerCase();
-        return contentNormalized.includes(searchNormalized);
-    });
-    return homeTodo;
+  const homeTodo = todos.filter((todo) => {
+    const searchNormalized = search.toLocaleLowerCase();
+    const contentNormalized = todo.content.toLocaleLowerCase();
+    return contentNormalized.includes(searchNormalized);
+  });
+  return homeTodo;
 }
 
 interface TodoControllerCreateParams {
-    content?: string;
-    onSuccess: (todo: Todo) => void;
-    onError: (customMessage?: string) => void;
+  content?: string;
+  onSuccess: (todo: Todo) => void;
+  onError: (customMessage?: string) => void;
 }
 
 async function create({
-    content,
-    onSuccess,
-    onError,
+  content,
+  onSuccess,
+  onError,
 }: TodoControllerCreateParams) {
-    // * Fail Fast Validations
-    const parsedParams = schema.string().min(1).safeParse(content);
+  // * Fail Fast Validations
+  const parsedParams = schema.string().min(1).safeParse(content);
 
-    if (!parsedParams.success) {
-        // ? Como pode ser feito sem o zod
-        // if (!content) {
-        onError("Você precisa prover um conteúdo");
-        return;
-    }
+  if (!parsedParams.success) {
+    // ? Como pode ser feito sem o zod
+    // if (!content) {
+    onError("Você precisa prover um conteúdo");
+    return;
+  }
 
-    todoRepository
-        .createByContent(parsedParams.data)
-        .then((newTodo) => {
-            onSuccess(newTodo);
-        })
-        .catch(() => {
-            onError();
-        });
+  todoRepository
+    .createByContent(parsedParams.data)
+    .then((newTodo) => {
+      onSuccess(newTodo);
+    })
+    .catch(() => {
+      onError();
+    });
 
-    // const todo = {
-    //     id: "12345",
-    //     content,
-    //     date: new Date().toISOString(),
-    //     done: false,
-    // };
+  // const todo = {
+  //     id: "12345",
+  //     content,
+  //     date: new Date().toISOString(),
+  //     done: false,
+  // };
 
-    // try {
-    //     const todo = await todoRepository.createByContent(content);
-    //     onSuccess(todo);
-    // } catch (error) {
-    //     onError();
-    // }
-    // return;
+  // try {
+  //     const todo = await todoRepository.createByContent(content);
+  //     onSuccess(todo);
+  // } catch (error) {
+  //     onError();
+  // }
+  // return;
 }
 
 interface TodoControllerToggleDoneParams {
-    content?: string;
-    onError: (customMessage?: string) => void;
-    updateTodoOnScreen: () => void;
+  content?: string;
+  onError: (customMessage?: string) => void;
+  updateTodoOnScreen: () => void;
 }
 
 async function toggleDone({
-    content: id,
-    onError,
-    updateTodoOnScreen,
+  content: id,
+  onError,
+  updateTodoOnScreen,
 }: TodoControllerToggleDoneParams) {
-    // * Fail Fast Validations
-    const parsedParams = schema.string().min(1).safeParse(id);
+  // * Fail Fast Validations
+  const parsedParams = schema.string().min(1).safeParse(id);
 
-    if (!parsedParams.success) {
-        // ? Como pode ser feito sem o zod
-        // if (!content) {
-        throw new Error("Você precisa informar um todo id");
-    }
+  if (!parsedParams.success) {
+    // ? Como pode ser feito sem o zod
+    // if (!content) {
+    throw new Error("Você precisa informar um todo id");
+  }
 
-    // * Optimistic Update
-    updateTodoOnScreen();
-    todoRepository.toggleDone(parsedParams.data).catch(() => {
-        onError();
-    });
-    // .then(() => {
-    //     // * Update Real
-    //     updateTodoOnScreen();
-    // });
+  // * Optimistic Update
+  updateTodoOnScreen();
+  todoRepository.toggleDone(parsedParams.data).catch(() => {
+    onError();
+  });
+  // .then(() => {
+  //     // * Update Real
+  //     updateTodoOnScreen();
+  // });
 }
 
 async function deleteById(id: string): Promise<void> {
-    // * Fail Fast Validations
-    const parsedParams = schema.string().min(1).safeParse(id);
+  // * Fail Fast Validations
+  const parsedParams = schema.string().min(1).safeParse(id);
 
-    if (!parsedParams.success) {
-        // ? Como pode ser feito sem o zod
-        // if (!content) {
-        throw new Error("Você precisa informar um todo id");
-    }
+  if (!parsedParams.success) {
+    // ? Como pode ser feito sem o zod
+    // if (!content) {
+    throw new Error("Você precisa informar um todo id");
+  }
 
-    // * Optimistic Update
-    // updateTodoOnScreen();
-    return await todoRepository.deleteById(parsedParams.data);
+  // * Optimistic Update
+  // updateTodoOnScreen();
+  return await todoRepository.deleteById(parsedParams.data);
 }
 
 export const todoController = {
-    get,
-    filterTodosByContent,
-    create,
-    toggleDone,
-    deleteById,
+  get,
+  filterTodosByContent,
+  create,
+  toggleDone,
+  deleteById,
 };
